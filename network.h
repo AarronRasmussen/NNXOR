@@ -6,4 +6,5 @@ class Network {
     public:
     std::vector<Layer> layers;
     Network(const std::vector<int>& n);
+    void printNetWork();
 };

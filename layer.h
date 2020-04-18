@@ -7,4 +7,5 @@ class Layer {
     double bias;
     std::vector<Node> nodes;
     Layer(int length, int numWeights);
+    void printLayer();
 };

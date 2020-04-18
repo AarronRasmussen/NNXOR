@@ -8,3 +8,11 @@ Network::Network(const std::vector<int>& n) {
         iter++;
     });
 }
+
+void Network::printNetWork() {
+    std::cout << "Printing Network information: " << std::endl;
+
+    std::for_each(layers.begin(), layers.end(), [](auto &o){
+        o.printLayer();
+    });
+}

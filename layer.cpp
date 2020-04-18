@@ -11,3 +11,13 @@ Layer::Layer(int length, int numWeights) {
         nodes.push_back(Node(numWeights));
     }
 }
+
+void Layer::printLayer() {
+    std::cout << "Number of nodes in layer: " << nodes.size() << std::endl;
+    std::cout << "Bias is: " << bias << std::endl;
+    std::cout << std::endl;
+
+    std::for_each(nodes.begin(), nodes.end(), [](auto& o){
+        o.printWeights();
+    });
+}
