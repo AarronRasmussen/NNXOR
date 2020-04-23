@@ -1,8 +1,6 @@
 #include "network.h"
+#include "tests.h"
 
 int main(int argc, char**argv) {
-    std::vector<int> n{2,2,1};
-
-    Network net(n);
-    net.printNetWork();
+   testFeedForward();
 }
