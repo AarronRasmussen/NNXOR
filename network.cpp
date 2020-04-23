@@ -14,14 +14,17 @@ void Network::printNetWork() {
     });
 }
 
-void Network::feedForward(double in1, double in2){
+double Network::feedForward(double in1, double in2){
     //layer one outputs
-    double l1n1netInput = in1 * this->layers[0].nodes[0].weights[0] + in2 * this->layers[0].nodes[0].weights[1];
-    double l1n2netInput = in1 * this->layers[0].nodes[1].weights[0] + in2 * this->layers[0].nodes[1].weights[1];
+    double l1n1netInput = in1 * this->layers[0].nodes[0].weights[0] + in2 * this->layers[0].nodes[0].weights[1] + this->layers[0].bias;
+    double l1n2netInput = in1 * this->layers[0].nodes[1].weights[0] + in2 * this->layers[0].nodes[1].weights[1] + this->layers[0].bias;
     double l1n1out = this->logisticFunction(l1n1netInput);
     double l1n2out = this->logisticFunction(l1n2netInput);
    
-    double l2n1netInput = 
+    double l2n1netInput = l1n1out * this->layers[1].nodes[0].weights[0] + l1n2out * this->layers[1].nodes[0].weights[1] + this->layers[1].bias;
+    double l2n1out = logisticFunction(l2n1netInput);
+
+    return l2n1out;
 }
 
 double Network::logisticFunction(double netInput){

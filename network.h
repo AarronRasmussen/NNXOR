@@ -10,6 +10,6 @@ class Network {
 
     Network(const std::vector<int>& n);
     void printNetWork();
-    void feedForward(double in1, double in2);
+    double feedForward(double in1, double in2);
     double logisticFunction(double netInput);
 };

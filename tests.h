@@ -18,5 +18,6 @@ void testFeedForward(){
     net.layers[1].nodes[0].weights[0] = 0.5;
     net.layers[1].nodes[0].weights[1] = 0.1;
 
-
+    std::cout << "Feed forward returned: " << net.feedForward(1.0, 1.0) << std::endl;
+    
 }
