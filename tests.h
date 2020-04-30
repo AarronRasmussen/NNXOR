@@ -1,5 +1,6 @@
 #pragma once
 #include "network.h"
+#include <assert.h>
 
 void testFeedForward(){
     //setup network
@@ -18,6 +19,10 @@ void testFeedForward(){
     net.layers[1].nodes[0].weights[0] = 0.5;
     net.layers[1].nodes[0].weights[1] = 0.1;
 
-    std::cout << "Feed forward returned: " << net.feedForward(1.0, 1.0) << std::endl;
+    double outPut = net.feedForward(1.0, 1.0);
+    std::cout << "Feed forward returned: " << outPut << std::endl;
+
+    assert(outPut < 1.0);
+    assert(outPut > 0.0);
     
 }
