@@ -1,4 +1,5 @@
 #include "network.h"
+#include <cmath>
 
 Network::Network(const std::vector<int>& n) {
     for(int i = 1; i < n.size(); i++) {
@@ -27,16 +28,47 @@ double Network::feedForward(double in1, double in2){
 
     this->feedForwardOutput[0] = in1;
     this->feedForwardOutput[1] = in2;
-    this->feedForwardOutput[2] = l1n1out;
-    this->feedForwardOutput[3] = l1n2out;
-    this->feedForwardOutput[4] = l2n1out;
+    this->feedForwardOutput[2] = l1n1out; //.7503
+    this->feedForwardOutput[3] = l1n2out; //.6682
+    this->feedForwardOutput[4] = l2n1out; //.6774
     return l2n1out;
 }
 
-double Network::backPropagate(){
+void Network::backPropagate(double target) {    
+    std::cout << "Total Error: " << (0.5 * pow(target - feedForwardOutput.at(4), 2)) << std::endl;
+    
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * (feedForwardOutput.at(2)));
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * (feedForwardOutput.at(3)));
+
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(0) * (feedForwardOutput.at(2) * (1.0 - feedForwardOutput.at(2))) * feedForwardOutput.at(0));
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(0) * (feedForwardOutput.at(2) * (1.0 - feedForwardOutput.at(2))) * feedForwardOutput.at(1));
+
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(1) * (feedForwardOutput.at(3) * (1.0 - feedForwardOutput.at(3))) * feedForwardOutput.at(0));
+    deltaOutput.push_back(-(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(1) * (feedForwardOutput.at(3) * (1.0 - feedForwardOutput.at(3))) * feedForwardOutput.at(1));
+
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * (feedForwardOutput.at(2)) << std::endl;
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * (feedForwardOutput.at(3)) << std::endl;
+
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(0) * (feedForwardOutput.at(2) * (1.0 - feedForwardOutput.at(2))) * feedForwardOutput.at(0) << std::endl;
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(0) * (feedForwardOutput.at(2) * (1.0 - feedForwardOutput.at(2))) * feedForwardOutput.at(1) << std::endl;
+
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(1) * (feedForwardOutput.at(3) * (1.0 - feedForwardOutput.at(3))) * feedForwardOutput.at(0) << std::endl;
+    // std::cout << -(target - feedForwardOutput.at(4)) * (feedForwardOutput.at(4) * (1 - feedForwardOutput.at(4))) * layers.at(1).nodes.at(0).weights.at(1) * (feedForwardOutput.at(3) * (1.0 - feedForwardOutput.at(3))) * feedForwardOutput.at(1) << std::endl;
 
 }
 
 double Network::logisticFunction(double netInput){
     return (1 / (1 + exp(-1 * netInput)));
+}
+
+void Network::updateWeights() {
+    layers.at(1).nodes.at(0).weights.at(0) = (layers.at(1).nodes.at(0).weights.at(0) -  (learningRate * deltaOutput.at(0)));
+    layers.at(1).nodes.at(0).weights.at(1) = (layers.at(1).nodes.at(0).weights.at(1) -  (learningRate * deltaOutput.at(1)));
+
+    layers.at(0).nodes.at(0).weights.at(0) = (layers.at(0).nodes.at(0).weights.at(0) - (learningRate * deltaOutput.at(2)));
+    layers.at(0).nodes.at(0).weights.at(1) = (layers.at(0).nodes.at(0).weights.at(1) - (learningRate * deltaOutput.at(3)));
+
+    layers.at(0).nodes.at(1).weights.at(0) = (layers.at(0).nodes.at(1).weights.at(0) - (learningRate * deltaOutput.at(4)));
+    layers.at(0).nodes.at(1).weights.at(1) = (layers.at(0).nodes.at(1).weights.at(1) - (learningRate * deltaOutput.at(5)));
+
 }

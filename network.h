@@ -7,12 +7,16 @@ class Network {
     public:
     
     std::vector<Layer> layers;
+
     std::vector<double> feedForwardOutput;
-    double learningRate = 0.1;
+    std::vector<double> deltaOutput;
+
+    double learningRate = 0.5;
 
     Network(const std::vector<int>& n);
     void printNetWork();
     double feedForward(double in1, double in2);
-    double backPropagate();
+    void backPropagate(double target);
+    void updateWeights();
     double logisticFunction(double netInput);
 };
