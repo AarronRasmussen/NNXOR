@@ -4,6 +4,7 @@ Network::Network(const std::vector<int>& n) {
     for(int i = 1; i < n.size(); i++) {
         layers.push_back(Layer(n.at(i), n.at(i - 1)));
     }
+    this->feedForwardOutput = std::vector(5, 0.0);
 }
 
 void Network::printNetWork() {
@@ -24,7 +25,16 @@ double Network::feedForward(double in1, double in2){
     double l2n1netInput = l1n1out * this->layers[1].nodes[0].weights[0] + l1n2out * this->layers[1].nodes[0].weights[1] + this->layers[1].bias;
     double l2n1out = logisticFunction(l2n1netInput);
 
+    this->feedForwardOutput[0] = in1;
+    this->feedForwardOutput[1] = in2;
+    this->feedForwardOutput[2] = l1n1out;
+    this->feedForwardOutput[3] = l1n2out;
+    this->feedForwardOutput[4] = l2n1out;
     return l2n1out;
+}
+
+double Network::backPropagate(){
+
 }
 
 double Network::logisticFunction(double netInput){

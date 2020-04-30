@@ -43,6 +43,6 @@ void testBackProp(){
     net.layers[1].bias = 0.3;
     net.layers[1].nodes[0].weights[0] = 0.5;
     net.layers[1].nodes[0].weights[1] = 0.1;
-    double outPut = net.feedForward(1.0, 1.0);
-    std::cout << "Feed forward returned: " << outPut << std::endl;
+    double output = net.feedForward(1.0, 1.0);
+    double error = net.backPropagate();
 }
